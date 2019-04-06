@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "gts": "^0.9.0",
+    "tslint": "^5.14.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "~3.1.0"
+  },
+  "scripts": {
+    "check": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc -p .",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run check",
+    "start": "npm run compile && node build/src/index.js",
+    "run": "node build/src/index.js"
+  },
+  "dependencies": {
+    "@sentry/node": "4.6.4",
+    "@types/node": "^11.11.3",
+    "chalk": "^2.4.2",
+    "discord.js": "^11.4.2",
+    "discord.js-commando": "^0.10.0"
+  }
+}
