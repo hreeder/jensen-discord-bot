@@ -17,9 +17,11 @@ export class Jensen {
     console.log(chalk.green('Welcome ') + 'to ' + chalk.blue('Jensen'));
     console.log('I hope you asked for this.\n');
 
+    let commandPrefix = process.env.COMMAND_PREFIX || "$";
+
     this.client = new CommandoClient({
       owner: '49558744991793152',
-      commandPrefix: '$',
+      commandPrefix: commandPrefix,
       messageCacheLifetime: 30,
       messageSweepInterval: 60
     });
