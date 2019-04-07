@@ -1,0 +1,9 @@
+image:
+  repository: hreeder/jensen
+  tag: latest
+  pullPolicy: IfNotPresent
+
+secrets:
+  existingSecret: jensenbot-secrets
+  discordTokenKey: discord-token
+  sentryDsnKey: sentry-dsn
