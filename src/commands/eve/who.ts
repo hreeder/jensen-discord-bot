@@ -36,10 +36,8 @@ export default class Who extends JensenCommand {
     }
 
     if (embed !== null) {
-      embed
-          .setFooter(`Retrieved from ESI`)
-          .setTimestamp()
-      return msg.reply({embed: embed})
+      embed.setFooter(`Retrieved from ESI`).setTimestamp();
+      return msg.reply({embed});
     }
 
     return msg.reply(`Nothing found by the name of ${args.name}`);
@@ -52,15 +50,18 @@ export default class Who extends JensenCommand {
 
     const embed =
         new RichEmbed()
-            .setAuthor("EvE Online Character", 'https://pbs.twimg.com/profile_images/1055096512898830338/cP_VSPQO_400x400.jpg')
+            .setAuthor(
+                'EvE Online Character',
+                'https://pbs.twimg.com/profile_images/1055096512898830338/cP_VSPQO_400x400.jpg')
             .setTitle(character.name)
             .setThumbnail(
                 `https://image.eveonline.com/Character/${characterID}_128.jpg`)
-            .addField('Corporation', `${corporation.name} [${corporation.ticker}]`, true);
-  
+            .addField(
+                'Corporation', `${corporation.name} [${corporation.ticker}]`,
+                true);
+
     if (corporation.alliance_id !== undefined) {
-      const alliance =
-          await this.esi.alliance.get(corporation.alliance_id)
+      const alliance = await this.esi.alliance.get(corporation.alliance_id);
       embed.addField('Alliance', `${alliance.name} <${alliance.ticker}>`, true);
     } else {
       embed.addBlankField(true);
@@ -68,10 +69,15 @@ export default class Who extends JensenCommand {
 
     embed
         .addField(
-          'Security Status',
-          Math.round(character.security_status * 100) / 100, true)
-        .addField('Links',
-          `[EvEWho](https://evewho.com/pilot/${character.name.replace(" ", "_")}) ~ [zKillboard](https://zkillboard.com/character/${characterID})`);
+            'Security Status',
+            Math.round(character.security_status * 100) / 100, true)
+        .addField(
+            'Links',
+            `[EvEWho](https://evewho.com/pilot/${
+                character.name.replace(
+                    ' ',
+                    '_')}) ~ [zKillboard](https://zkillboard.com/character/${
+                characterID})`);
 
     return embed;
   }
@@ -80,21 +86,22 @@ export default class Who extends JensenCommand {
     const corp = await this.esi.corporation.get(corpID);
     const embed =
         new RichEmbed()
-            .setAuthor("EvE Online Corporation", 'https://pbs.twimg.com/profile_images/1055096512898830338/cP_VSPQO_400x400.jpg')
+            .setAuthor(
+                'EvE Online Corporation',
+                'https://pbs.twimg.com/profile_images/1055096512898830338/cP_VSPQO_400x400.jpg')
             .setTitle(`${corp.name} [${corp.ticker}]`)
             .setThumbnail(
-              `https://image.eveonline.com/Corporation/${corpID}_128.png`)
+                `https://image.eveonline.com/Corporation/${corpID}_128.png`);
 
     if (corp.alliance_id !== undefined) {
-      const alliance =
-          await this.esi.alliance.get(corp.alliance_id)
+      const alliance = await this.esi.alliance.get(corp.alliance_id);
       embed.addField('Alliance', `${alliance.name} <${alliance.ticker}>`, true);
     }
 
-    embed
-        .addField('Members', corp.member_count)
-        .addField('Links',
-          `[zKillboard](https://zkillboard.com/corporation/${corpID})`)
+    embed.addField('Members', corp.member_count)
+        .addField(
+            'Links',
+            `[zKillboard](https://zkillboard.com/corporation/${corpID})`);
 
     return embed;
   }
