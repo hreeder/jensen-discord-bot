@@ -24,13 +24,10 @@ export class Jensen {
       messageSweepInterval: 60
     });
 
-    this.client.registry.registerGroups([
-      ['fun', 'Fun Things and commands and stuff'],
-      ['admin', 'Bot Administration'], ['another', 'more!'],
-      ['eve', 'Eve Online Related Commands']
-    ]);
+    this.client.registry.registerGroups(
+        [['eve', 'Eve Online Related Commands']]);
 
-    this.setupInternals();
+    this.registerDefaults();
     this.bindCallbacks();
 
     this.client.registry.registerCommandsIn(pathJoin(__dirname, 'commands'));
@@ -38,10 +35,10 @@ export class Jensen {
     this.client.login(process.env.DISCORD_TOKEN);
   }
 
-  private setupInternals(): void {
-    this.client.registry.registerDefaultTypes();
-    this.client.registry.registerDefaultGroups();
-    this.client.registry.registerDefaultCommands({eval_: false});
+  private registerDefaults(): void {
+    this.client.registry.registerDefaultTypes()
+        .registerDefaultGroups()
+        .registerDefaultCommands({eval_: false});
   }
 
   private updateActivity(): void {
