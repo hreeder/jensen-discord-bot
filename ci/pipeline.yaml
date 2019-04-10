@@ -1,0 +1,25 @@
+---
+resources:
+  - name: repo
+    type: git
+    source:
+      uri: git@github.com:hreeder/jensen-discord-bot.git
+      branch: master
+      private_key: |
+        ((github.deploykey))
+
+  - name: docker-hub
+    type: docker-image
+    source:
+      repository: hreeder/jensen
+      username: ((dockerhub.username))
+      password: ((dockerhub.password))
+
+jobs:
+  - name: build
+    plan:
+      - get: repo
+        trigger: true
+      - put: docker-hub
+        params:
+          build: repo

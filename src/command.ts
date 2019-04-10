@@ -2,13 +2,41 @@ import {Message} from 'discord.js';
 import {Command, CommandMessage} from 'discord.js-commando';
 
 export class JensenCommand extends Command {
+  msg?: CommandMessage;
+
   async run(msg: CommandMessage, args: {}|string|string[]):
       Promise<Message|Message[]> {
+    this.msg = msg;
+
     return await this.exec(msg, args);
   }
 
   async exec(msg: CommandMessage, args: {}|string|string[]):
       Promise<Message|Message[]> {
     throw new Error('No exec specified!');
+  }
+
+  getGuildSetting(key: string, defVal?: any): any {
+    if (!this.client.provider || !this.msg) {
+      throw new Error('No access to guild settings')
+    }
+
+    return this.client.provider.get(this.msg.guild, key, defVal);
+  }
+
+  async setGuildSetting(key: string, val: any): Promise<any> {
+    if (!this.client.provider || !this.msg) {
+      throw new Error('No access to guild settings')
+    }
+
+    return await this.client.provider.set(this.msg.guild, key, val);
+  }
+
+  async clearGuildSettings(): Promise<void> {
+    if (!this.client.provider || !this.msg) {
+      throw new Error('No access to guild settings')
+    }
+
+    return await this.client.provider.clear(this.msg.guild);
   }
 }

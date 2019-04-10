@@ -1,10 +1,15 @@
 import chalk from 'chalk';
-import {Guild} from 'discord.js';
+import {Guild, GuildMember} from 'discord.js';
 import {CommandoClient} from 'discord.js-commando';
 import {join as pathJoin} from 'path';
 
+import {SettingsProvider} from './settingsProvider';
+
+import {AuditHook} from './hooks/audit';
+
 export class Jensen {
   private client!: CommandoClient;
+  private audit!: AuditHook;
 
   run(): void {
     if (process.env.DISCORD_TOKEN === undefined) {
@@ -25,14 +30,27 @@ export class Jensen {
       messageCacheLifetime: 30,
       messageSweepInterval: 60
     });
-
-    this.client.registry.registerGroups(
-        [['eve', 'Eve Online Related Commands']]);
+    console.log(chalk.green('setup:') + 'Client Created')
+    
+    this.client.registry.registerGroups([
+      ['eve', 'Eve Online Related Commands'],
+      ['moderation', 'Guild Moderation Commands']
+    ]);
+    console.log(chalk.green('setup:') + 'Groups Registered')
 
     this.registerDefaults();
     this.bindCallbacks();
+    console.log(chalk.green('setup:') + 'Internals Wired');
+
+    let settingsProvider = new SettingsProvider();
+    this.client.setProvider(settingsProvider);
+    console.log(chalk.green('setup:') + 'SettingsProvider set');
 
     this.client.registry.registerCommandsIn(pathJoin(__dirname, 'commands'));
+    console.log(chalk.green('setup:') + 'Commands Registered');
+
+    this.audit = new AuditHook(this.client);
+    console.log(chalk.green('setup:') + 'Hooks Set Up')
 
     this.client.login(process.env.DISCORD_TOKEN);
   }
@@ -52,6 +70,9 @@ export class Jensen {
     this.client.on('ready', this.onReady.bind(this));
     this.client.on('guildCreate', this.onGuildCreate.bind(this));
     this.client.on('guildDelete', this.onGuildDelete.bind(this));
+    if (process.env.NODE_DEBUG === 'commando') {
+      this.client.on('debug', message => console.log(message));
+    }
   }
 
   private onReady(): void {
@@ -68,5 +89,11 @@ export class Jensen {
   private onGuildDelete(guild: Guild): void {
     console.log(chalk.green('Removed ') + 'from ' + chalk.blue(guild.name));
     this.updateActivity();
+  }
+
+  private onGuildMemberAdd(member: GuildMember): void {
+    if (this.audit) {
+      this.audit.onGuildMemberAddAuditHook(member);
+    }
   }
 }
