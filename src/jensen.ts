@@ -23,6 +23,7 @@ export class Jensen {
     console.log('I hope you asked for this.\n');
 
     let commandPrefix = process.env.COMMAND_PREFIX || "$";
+    console.log(chalk.green('setup:') + `commandPrefix set to ${commandPrefix}`);
 
     this.client = new CommandoClient({
       owner: '49558744991793152',
@@ -67,12 +68,16 @@ export class Jensen {
   }
 
   private bindCallbacks(): void {
-    this.client.on('ready', this.onReady.bind(this));
-    this.client.on('guildCreate', this.onGuildCreate.bind(this));
-    this.client.on('guildDelete', this.onGuildDelete.bind(this));
     if (process.env.NODE_DEBUG === 'commando') {
       this.client.on('debug', message => console.log(message));
     }
+
+    this.client.on('ready', this.onReady.bind(this));
+    this.client.on('guildCreate', this.onGuildCreate.bind(this));
+    this.client.on('guildDelete', this.onGuildDelete.bind(this));
+
+    this.client.on('guildMemberAdd', this.onGuildMemberAdd.bind(this));
+    this.client.on('guildMemberRemove', this.onGuildMemberRemove.bind(this));
   }
 
   private onReady(): void {
@@ -94,6 +99,12 @@ export class Jensen {
   private onGuildMemberAdd(member: GuildMember): void {
     if (this.audit) {
       this.audit.onGuildMemberAddAuditHook(member);
+    }
+  }
+
+  private onGuildMemberRemove(member: GuildMember): void {
+    if (this.audit) {
+      this.audit.onGuildMemberRemoveAuditHook(member);
     }
   }
 }

@@ -16,6 +16,6 @@ export default class RegisterAuditDestination extends JensenCommand {
       Promise<Message|Message[]> {
     await this.setGuildSetting('moderation.auditChannel', msg.channel.id);
 
-    return msg.reply(`Audit Channel set to ${msg.channel.id}`);
+    return msg.reply(`Audit Channel set to ${msg.channel}`);
   }
 }
