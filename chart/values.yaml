@@ -1,7 +1,7 @@
 image:
   repository: hreeder/jensen
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 secrets:
   existingSecret: jensenbot-secrets
