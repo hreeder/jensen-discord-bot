@@ -14,18 +14,18 @@ export default class Channels extends JensenCommand {
 
   async exec(msg: CommandMessage, _args: {}):
       Promise<Message|Message[]> {
-    let channels = msg.guild.channels.map((channel: GuildChannel) => [channel.name, channel.id, channel.type]);
+    const channels = msg.guild.channels.map((channel: GuildChannel) => [channel.name, channel.id, channel.type]);
 
-    let lines = ["I know of the following channels"]
+    const lines = ["I know of the following channels"];
 
     channels.forEach(([name, id, group]) => lines.push(`[${group}] ${name}: ${id}`));
 
-    lines.push(`The current channel is: [${msg.channel.type}] ${msg.channel.id}`)
+    lines.push(`The current channel is: [${msg.channel.type}] ${msg.channel.id}`);
 
-    let x: Channel|undefined = this.client.channels.get(msg.channel.id);
+    const x: Channel|undefined = this.client.channels.get(msg.channel.id);
 
     if (x !== undefined && x.type === 'text') {
-        let y: TextChannel = <TextChannel>x;
+        const y: TextChannel = x as TextChannel;
         y.send('test123');
     }
     

@@ -5,20 +5,20 @@ export class SettingsProvider extends SettingProvider {
   settings: Map<string, Map<string, string>>;
 
   constructor() {
-    super()
+    super();
     this.settings = new Map();
   }
 
   private getGSettings(guild: Guild | string): Map<string, string> {
-    let gKey = SettingProvider.getGuildID(guild);
+    const gKey = SettingProvider.getGuildID(guild);
 
-    let gSettings = this.settings.get(gKey)
+    let gSettings = this.settings.get(gKey);
     if (gSettings === undefined) {
       gSettings = new Map();
       this.settings.set(gKey, gSettings);
     }
 
-    return gSettings
+    return gSettings;
   }
 
   async init(client: CommandoClient): Promise<void> {}
@@ -26,12 +26,12 @@ export class SettingsProvider extends SettingProvider {
   async destroy(): Promise<void> {}
 
   get(guild: Guild | string, key: string, defVal?: any): any {
-    let val = this.getGSettings(guild).get(key);
+    const val = this.getGSettings(guild).get(key);
 
     if (val !== undefined) {
-      return val
+      return val;
     } else if (val === undefined && defVal !== undefined) {
-      return defVal
+      return defVal;
     }
 
     return undefined;

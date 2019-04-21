@@ -8,13 +8,13 @@ export class AuditHook {
   }
 
   async onGuildMemberAddAuditHook(member: GuildMember): Promise<void> {
-    let guild: Guild = member.guild;
-    let auditChannelId: string = this.client.provider.get(guild, 'moderation.auditChannel');
+    const guild: Guild = member.guild;
+    const auditChannelId: string = this.client.provider.get(guild, 'moderation.auditChannel');
 
     if (auditChannelId) { // This will be undefined if the guild has not registered an audit channel
-      let auditChannel = this.client.channels.get(auditChannelId);
+      const auditChannel = this.client.channels.get(auditChannelId);
       if (auditChannel && auditChannel.type === 'text') {
-        let embed = new RichEmbed()
+        const embed = new RichEmbed()
             .setThumbnail(member.user.avatarURL)
             .setTitle(`${member.user.tag} joined the server`)
             .addField('Username', member.user.username, true)
@@ -22,23 +22,23 @@ export class AuditHook {
             .addField('ID', member.user.id, true)
             .addField('Joined At', member.joinedAt, true)
             .setFooter('Audit Log: User Joined Guild');
-        (<TextChannel>auditChannel).send({embed: embed});
+        (auditChannel as TextChannel).send({embed});
       }
     }
   }
 
   async onGuildMemberRemoveAuditHook(member: GuildMember): Promise<void> {
-    let guild: Guild = member.guild;
-    let auditChannelId: string = this.client.provider.get(guild, 'moderation.auditChannel');
+    const guild: Guild = member.guild;
+    const auditChannelId: string = this.client.provider.get(guild, 'moderation.auditChannel');
 
     if (auditChannelId) { // This will be undefined if the guild has not registered an audit channel
-      let auditChannel = this.client.channels.get(auditChannelId);
+      const auditChannel = this.client.channels.get(auditChannelId);
       if (auditChannel && auditChannel.type === 'text') {
-        let embed = new RichEmbed()
+        const embed = new RichEmbed()
             .setThumbnail(member.user.avatarURL)
             .setTitle(`${member.user.tag} left the server`)
             .setFooter('Audit Log: User Left Guild');
-        (<TextChannel>auditChannel).send({embed: embed});
+        (auditChannel as TextChannel).send({embed});
       }
     }
   }

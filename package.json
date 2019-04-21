@@ -18,10 +18,13 @@
   },
   "dependencies": {
     "@sentry/node": "4.6.4",
+    "@types/express": "^4.16.1",
     "@types/node": "^11.13.4",
     "chalk": "^2.4.2",
     "discord.js": "^11.4.2",
     "discord.js-commando": "^0.10.0",
+    "express": "^4.16.4",
+    "prom-client": "^11.3.0",
     "typed-rest-client": "^1.2.0"
   }
 }

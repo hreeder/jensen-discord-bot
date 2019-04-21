@@ -16,9 +16,9 @@ export default class Settings extends JensenCommand {
 
   async exec(msg: CommandMessage, _args: {}):
       Promise<Message|Message[]> {
-    let output: string[] = ['Settings'];
+    const output: string[] = ['Settings'];
     if (this.client.provider) {
-      let provider = <SettingsProvider>this.client.provider;
+      const provider = this.client.provider as SettingsProvider;
       provider.settings.forEach((guildSettings: Map<string, string>, guildId: string) => {
         guildSettings.forEach((val: string, key: string) => {
           output.push(`${guildId}:${key}:${val}`);
