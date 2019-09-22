@@ -1,5 +1,5 @@
 import {Message} from 'discord.js';
-import {CommandMessage, CommandoClient, GuildSettingsHelper} from 'discord.js-commando';
+import {CommandoMessage, CommandoClient} from 'discord.js-commando';
 import {JensenCommand} from '../../command';
 
 export default class RegisterAuditDestination extends JensenCommand {
@@ -12,7 +12,7 @@ export default class RegisterAuditDestination extends JensenCommand {
     });
   }
 
-  async exec(msg: CommandMessage, _args: {}):
+  async exec(msg: CommandoMessage, _args: {}):
       Promise<Message|Message[]> {
     await this.setGuildSetting('moderation.auditChannel', msg.channel.id);
 

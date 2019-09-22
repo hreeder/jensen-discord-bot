@@ -1,5 +1,5 @@
 import {Message} from 'discord.js';
-import {CommandMessage, CommandoClient} from 'discord.js-commando';
+import {CommandoMessage, CommandoClient} from 'discord.js-commando';
 import {JensenCommand} from '../../command';
 import { SettingsProvider } from '../../settingsProvider';
 
@@ -14,7 +14,7 @@ export default class Settings extends JensenCommand {
     });
   }
 
-  async exec(msg: CommandMessage, _args: {}):
+  async exec(msg: CommandoMessage, _args: {}):
       Promise<Message|Message[]> {
     const output: string[] = ['Settings'];
     if (this.client.provider) {

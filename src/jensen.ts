@@ -47,7 +47,7 @@ export class Jensen {
     console.log(chalk.green('setup:') + 'Groups Registered');
 
     this.registerDefaults();
-    this.client.registry.registerType(CustomEmojiArgumentType);
+    // this.client.registry.registerType(CustomEmojiArgumentType);
     this.bindCallbacks();
     console.log(chalk.green('setup:') + 'Internals Wired');
 
@@ -76,11 +76,11 @@ export class Jensen {
   private registerDefaults(): void {
     this.client.registry.registerDefaultTypes()
         .registerDefaultGroups()
-        .registerDefaultCommands({eval_: false});
+        .registerDefaultCommands({eval: false});
   }
 
   private updateActivity(): void {
-    this.client.user.setActivity(
+    this.client.user!.setActivity(
         `${this.client.guilds.size} Servers`, {type: 'LISTENING'});
   }
 
@@ -94,6 +94,7 @@ export class Jensen {
     this.client.on('guildDelete', this.onGuildDelete.bind(this));
 
     this.client.on('messageReactionAdd', this.onMessageReactionAdd.bind(this));
+    this.client.on('messageReactionRemove', this.onMessageReactionRemove.bind(this));
 
     this.client.on('guildMemberAdd', this.onGuildMemberAdd.bind(this));
     this.client.on('guildMemberRemove', this.onGuildMemberRemove.bind(this));
@@ -101,7 +102,7 @@ export class Jensen {
 
   private onReady(): void {
     console.log(
-        chalk.green('Logged In ') + 'as ' + chalk.blue(this.client.user.tag));
+        chalk.green('Logged In ') + 'as ' + chalk.blue(this.client.user!.tag));
     this.updateActivity();
   }
 
@@ -118,6 +119,12 @@ export class Jensen {
   private onMessageReactionAdd(reaction: MessageReaction, user: User) {
     if (this.rrhooks) {
       this.rrhooks.onMessageReactionAdd(reaction, user);
+    }
+  }
+
+  private onMessageReactionRemove(reaction: MessageReaction, user: User) {
+    if (this.rrhooks) {
+      this.rrhooks.onMessageReactionRemove(reaction, user);
     }
   }
 

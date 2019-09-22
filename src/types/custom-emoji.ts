@@ -1,12 +1,12 @@
 import {Util, Emoji} from 'discord.js';
-import {ArgumentType, util as CommandoUtil, CommandoClient, CommandMessage} from 'discord.js-commando';
+import {ArgumentType, util as CommandoUtil, CommandoClient, CommandoMessage} from 'discord.js-commando';
 
 export class CustomEmojiArgumentType extends ArgumentType {
 	constructor(client: CommandoClient) {
 		super(client, 'custom-emoji');
 	}
 
-	validate(value: string, msg: CommandMessage) {
+	validate(value: string, msg: CommandoMessage) {
 		const matches = value.match(/^(?:<a?:([a-zA-Z0-9_]+):)?([0-9]+)>?$/);
 		if(matches && msg.client.emojis.has(matches[2])) return true;
 		if(!msg.guild) return false;
@@ -22,7 +22,7 @@ export class CustomEmojiArgumentType extends ArgumentType {
 			'Multiple emojis found. Please be more specific.';
 	}
 
-	parse(value: string, msg: CommandMessage) {
+	parse(value: string, msg: CommandoMessage) {
 		const matches = value.match(/^(?:<a?:([a-zA-Z0-9_]+):)?([0-9]+)>?$/);
 		if(matches) return msg.client.emojis.get(matches[2]) || null;
 		const search = value.toLowerCase();

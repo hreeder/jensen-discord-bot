@@ -1,5 +1,5 @@
 import {Message, GuildChannel, Channel, TextChannel} from 'discord.js';
-import {CommandMessage, CommandoClient} from 'discord.js-commando';
+import {CommandoMessage, CommandoClient} from 'discord.js-commando';
 import {JensenCommand} from '../../command';
 
 export default class Channels extends JensenCommand {
@@ -12,7 +12,7 @@ export default class Channels extends JensenCommand {
     });
   }
 
-  async exec(msg: CommandMessage, _args: {}):
+  async exec(msg: CommandoMessage, _args: {}):
       Promise<Message|Message[]> {
     const channels = msg.guild.channels.map((channel: GuildChannel) => [channel.name, channel.id, channel.type]);
 

@@ -1,5 +1,5 @@
-import {Message, RichEmbed} from 'discord.js';
-import {CommandMessage, CommandoClient} from 'discord.js-commando';
+import {Message, MessageEmbed} from 'discord.js';
+import {CommandoMessage, CommandoClient} from 'discord.js-commando';
 import {JensenCommand} from '../../command';
 
 import {ESIClient} from '../../esi';
@@ -23,7 +23,7 @@ export default class Who extends JensenCommand {
     this.esi = new ESIClient();
   }
 
-  async exec(msg: CommandMessage, args: {name: string}):
+  async exec(msg: CommandoMessage, args: {name: string}):
       Promise<Message|Message[]> {
     const ids = await this.esi.universe.IDs([args.name]);
 
@@ -43,13 +43,13 @@ export default class Who extends JensenCommand {
     return msg.reply(`Nothing found by the name of ${args.name}`);
   }
 
-  private async buildCharacterEmbed(characterID: number): Promise<RichEmbed> {
+  private async buildCharacterEmbed(characterID: number): Promise<MessageEmbed> {
     const character = await this.esi.character.get(characterID);
     const corporation =
         await this.esi.corporation.get(character.corporation_id);
 
     const embed =
-        new RichEmbed()
+        new MessageEmbed()
             .setAuthor(
                 'EvE Online Character',
                 'https://pbs.twimg.com/profile_images/1055096512898830338/cP_VSPQO_400x400.jpg')
@@ -82,10 +82,10 @@ export default class Who extends JensenCommand {
     return embed;
   }
 
-  private async buildCorporationEmbed(corpID: number): Promise<RichEmbed> {
+  private async buildCorporationEmbed(corpID: number): Promise<MessageEmbed> {
     const corp = await this.esi.corporation.get(corpID);
     const embed =
-        new RichEmbed()
+        new MessageEmbed()
             .setAuthor(
                 'EvE Online Corporation',
                 'https://pbs.twimg.com/profile_images/1055096512898830338/cP_VSPQO_400x400.jpg')

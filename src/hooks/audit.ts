@@ -1,4 +1,4 @@
-import {GuildMember, Guild, TextChannel, RichEmbed} from "discord.js";
+import {GuildMember, Guild, TextChannel, MessageEmbed} from "discord.js";
 import {CommandoClient} from "discord.js-commando";
 
 export class AuditHook {
@@ -14,14 +14,17 @@ export class AuditHook {
     if (auditChannelId) { // This will be undefined if the guild has not registered an audit channel
       const auditChannel = this.client.channels.get(auditChannelId);
       if (auditChannel && auditChannel.type === 'text') {
-        const embed = new RichEmbed()
-            .setThumbnail(member.user.avatarURL)
+        const embed = new MessageEmbed()
             .setTitle(`${member.user.tag} joined the server`)
             .addField('Username', member.user.username, true)
             .addField('Discriminator', member.user.discriminator, true)
             .addField('ID', member.user.id, true)
             .addField('Joined At', member.joinedAt, true)
             .setFooter('Audit Log: User Joined Guild');
+        const avatarURL = member.user.avatarURL();
+        if (avatarURL !== null) {
+          embed.setThumbnail(avatarURL);
+        }
         (auditChannel as TextChannel).send({embed});
       }
     }
@@ -34,10 +37,13 @@ export class AuditHook {
     if (auditChannelId) { // This will be undefined if the guild has not registered an audit channel
       const auditChannel = this.client.channels.get(auditChannelId);
       if (auditChannel && auditChannel.type === 'text') {
-        const embed = new RichEmbed()
-            .setThumbnail(member.user.avatarURL)
+        const embed = new MessageEmbed()
             .setTitle(`${member.user.tag} left the server`)
             .setFooter('Audit Log: User Left Guild');
+        const avatarURL = member.user.avatarURL();
+        if (avatarURL !== null) {
+          embed.setThumbnail(avatarURL);
+        }
         (auditChannel as TextChannel).send({embed});
       }
     }
