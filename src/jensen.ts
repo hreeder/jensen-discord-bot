@@ -4,6 +4,8 @@ import {CommandoClient} from 'discord.js-commando';
 import {join as pathJoin} from 'path';
 import {JensenMetrics} from './metrics';
 
+import {YouTube} from './youtube';
+
 import {SettingsProvider} from './settingsProvider';
 import {CustomEmojiArgumentType} from './types/custom-emoji';
 
@@ -15,6 +17,7 @@ export class Jensen {
   private audit!: AuditHook;
   private rrhooks!: RoleReactionsHooks;
   private metrics?: JensenMetrics;
+  private youtube?: YouTube;
 
   run(): void {
     if (process.env.DISCORD_TOKEN === undefined) {
@@ -70,6 +73,8 @@ export class Jensen {
       this.metrics.serve();
     }
 
+    this.setupPeriodic();
+
     this.client.login(process.env.DISCORD_TOKEN);
   }
 
@@ -82,6 +87,14 @@ export class Jensen {
   private updateActivity(): void {
     this.client.user!.setActivity(
         `${this.client.guilds.size} Servers`, {type: 'LISTENING'});
+  }
+
+  private setupPeriodic(): void {
+    const enableYoutube = Boolean(process.env.YOUTUBE_API_KEY) || false;
+    if (enableYoutube) {
+      this.youtube = new YouTube(this.client)
+      this.client.setInterval(this.youtube.check.bind(this.youtube), 6 * 60 * 60 * 1000);
+    }
   }
 
   private bindCallbacks(): void {

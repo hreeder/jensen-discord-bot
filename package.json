@@ -26,6 +26,7 @@
     "discord.js-commando": "discordjs/Commando#master",
     "express": "^4.16.4",
     "prom-client": "^11.3.0",
-    "typed-rest-client": "^1.2.0"
+    "typed-rest-client": "^1.2.0",
+    "youtube-search": "^1.1.4"
   }
 }
