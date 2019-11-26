@@ -62,6 +62,8 @@ export class YouTube {
         }
 
         if (results === undefined || results.length === 0) return
+        const filtered = results.filter(result => result.title.toLowerCase().indexOf(mapping.filter) > 0)
+        if (filtered.length === 0) return
 
         const _channel: Channel | undefined = this.discord.channels.get(mapping.outputChannel)
         if (_channel === undefined) {
