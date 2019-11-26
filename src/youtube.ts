@@ -56,11 +56,12 @@ export class YouTube {
     CHANNELS.forEach(mapping => {
       search(mapping.filter, { ...baseOpts, channelId: mapping.channelID }, (err: Error, results?: search.YouTubeSearchResults[] | undefined) => {
         if (err) {
+          console.log(results)
           console.log(chalk.red("ERROR:") + `${err}`)
           return
         }
 
-        if (results === undefined) return
+        if (results === undefined || results.length === 0) return
 
         const _channel: Channel | undefined = this.discord.channels.get(mapping.outputChannel)
         if (_channel === undefined) {
